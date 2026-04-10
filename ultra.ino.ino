@@ -7,7 +7,8 @@
 #include <UniversalTelegramBot.h>
 bool should=false;
 bool s=false;
-
+int angle;
+int mode=0;
 
 
 Servo myServo;
@@ -88,10 +89,10 @@ void handleRoot() {
 <h1>RADAR SYSTEM</h1>
 
 <div class="buttons">
-    <a href="http://10.135.93.154/h">
+    <a href="http://10.50.133.154/h">
   <button>Rotate 90 degree</button>
 </a>
-    <a href="http://10.135.93.154/f">
+    <a href="http://10.50.133.154/f">
   <button>Rotate 180 degree</button>
 </a>
     <button onclick="scan()">Scanning</button>
@@ -149,7 +150,8 @@ void handleH(){
 
 
 )rawliteral");
-for (int angle = 0; angle <= 90; angle += 20) {
+mode=1;
+for (angle = 0; angle <= 90; angle += 20) {
   myServo.write(angle);
   delay(500);
 
@@ -227,8 +229,8 @@ void handleF(){
 </body>
 </html>
   )rawliteral");
-  
-for (int angle = 0; angle <= 180; angle += 30) {
+  mode=2;
+for ( angle = 0; angle <= 180; angle += 30) {
   myServo.write(angle);
   delay(500);
 
@@ -241,7 +243,7 @@ for (int angle = 0; angle <= 180; angle += 30) {
 
   // Measure echo
   long time = pulseIn(echo, HIGH, 30000);
-  float dis = (0.0343 * time) / 2;  // Correct formula
+  float dis = (0.0343 * time) / 2;  //  formula
 
   Serial.print("Angle: ");
   Serial.print(angle);
@@ -311,23 +313,40 @@ void setup() {
   pinMode(led, OUTPUT);                             
   pinMode(trig, OUTPUT);
   pinMode(echo, INPUT);
-  pinMode(lasser, OUTPUT);                                                                                                                                                                                       
+  pinMode(lasser, OUTPUT);    
+                                                                                                                                                      Serial.print(should);                
 }
 
 void loop() {
   server.handleClient(); // Keeps the web server alive
-Serial.println(should);
-  if (should==true) { 
-    // Sweep from 0 to 90 degrees
-    for (int angle = 0; angle <= 90; angle += 20) {
+ 
+  if (mode == 1) {
+    // Continuous 90° sweep
+    for (angle = 0; angle <= 90; angle += 20) {
       myServo.write(angle);
-      delay(500); 
+      delay(500);
     }
-    
-    // Sweep back from 90 to 0 degrees
-    for (int angle = 90; angle >= 0; angle -= 20) {
+    for (angle = 90; angle >= 0; angle -= 20) {
       myServo.write(angle);
       delay(500);
     }
   }
-}
+
+  else if (mode == 2) {
+    // Continuous 180° sweep
+    for (angle = 0; angle <= 180; angle += 20) {
+      myServo.write(angle);
+      delay(500);
+    }
+    for (angle = 180; angle >= 0; angle -= 20) {
+      myServo.write(angle);
+      delay(500);
+    }
+  }
+
+
+
+
+
+    
+
