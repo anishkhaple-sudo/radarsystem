@@ -178,14 +178,14 @@ for (angle = 0; angle <= 90; angle += 20) {
     digitalWrite(led, HIGH);
     digitalWrite(lasser, HIGH);
     String msg = "Object detected at north west " + String(dis) + " cm";
-    should=true;
+  
     sendTelegramMessage(msg);
     Serial.println(msg);
   } 
   else if (dis < 25 && angle >= 90) {  
     digitalWrite(led, HIGH);
     digitalWrite(lasser, HIGH);
-    s=true;
+    
     String msg = "Object detected at south west " + String(dis) + " cm";
     sendTelegramMessage(msg);
     Serial.println(msg);
@@ -256,7 +256,6 @@ for ( angle = 0; angle <= 180; angle += 30) {
   if (dis < 20 && angle <= 90) {
     digitalWrite(led, HIGH);
     digitalWrite(lasser, HIGH);
-     should=true;
     String msg = "Object detected at north west " + String(dis) + " cm";
     sendTelegramMessage(msg);
     Serial.println(msg);
@@ -264,7 +263,6 @@ for ( angle = 0; angle <= 180; angle += 30) {
   else if (dis < 25 && angle >= 90) {  
     digitalWrite(led, HIGH);
     digitalWrite(lasser, HIGH);
-    s=true;
     String msg = "Object detected at south west " + String(dis) + " cm";
     sendTelegramMessage(msg);
     Serial.println(msg);
@@ -324,10 +322,12 @@ void loop() {
     // Continuous 90° sweep
     for (angle = 0; angle <= 90; angle += 20) {
       myServo.write(angle);
+      handleH();
       delay(500);
     }
     for (angle = 90; angle >= 0; angle -= 20) {
       myServo.write(angle);
+    
       delay(500);
     }
   }
@@ -336,6 +336,7 @@ void loop() {
     // Continuous 180° sweep
     for (angle = 0; angle <= 180; angle += 20) {
       myServo.write(angle);
+      handleF();
       delay(500);
     }
     for (angle = 180; angle >= 0; angle -= 20) {
@@ -343,10 +344,10 @@ void loop() {
       delay(500);
     }
   }
+}
 
 
 
 
 
     
-
